@@ -6,8 +6,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import java.util.List;
-
 @Configuration
 public class CorsConfig {
 
@@ -15,12 +13,10 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // ✅ Railway requires PATTERN not fixed origins
-        config.setAllowedOriginPatterns(List.of(
-                "http://localhost:4200",
-                "https://dodo-frontendvercel.vercel.app",
-                "*"
-        ));
+        // ✅ Railway requires wildcard pattern support
+        config.addAllowedOriginPattern("http://localhost:4200");
+        config.addAllowedOriginPattern("https://dodo-frontendvercel.vercel.app");
+        config.addAllowedOriginPattern("*");  // ✅ Allow all (required on Railway)
 
         // ✅ Allow all headers
         config.addAllowedHeader("*");
@@ -28,10 +24,10 @@ public class CorsConfig {
         // ✅ Allow all HTTP methods including OPTIONS
         config.addAllowedMethod("*");
 
-        // ✅ Allow credentials (cookies/tokens)
+        // ✅ Allow credentials
         config.setAllowCredentials(true);
 
-        // ✅ Apply CORS to all API paths
+        // ✅ Apply to all routes
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
 
