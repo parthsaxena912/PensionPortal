@@ -15,22 +15,23 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // ✅ Your frontend URLs
-        config.setAllowedOrigins(List.of(
+        // ✅ Railway requires PATTERN not fixed origins
+        config.setAllowedOriginPatterns(List.of(
                 "http://localhost:4200",
-                "https://dodo-frontendvercel.vercel.app"
+                "https://dodo-frontendvercel.vercel.app",
+                "*"
         ));
 
         // ✅ Allow all headers
-        config.setAllowedHeaders(List.of("*"));
+        config.addAllowedHeader("*");
 
-        // ✅ Allow all HTTP methods
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        // ✅ Allow all HTTP methods including OPTIONS
+        config.addAllowedMethod("*");
 
         // ✅ Allow credentials (cookies/tokens)
         config.setAllowCredentials(true);
 
-        // ✅ Apply CORS to all paths
+        // ✅ Apply CORS to all API paths
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
 
